@@ -1,0 +1,94 @@
+package com.example.citaPeluqueria.webControllers;
+
+import com.example.citaPeluqueria.domain.entities.*;
+import com.example.citaPeluqueria.domain.enums.Role;
+import com.example.citaPeluqueria.repositories.*;
+import com.example.citaPeluqueria.util.Constants;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+@Controller
+@RequestMapping("/admin")
+public class AdminController {
+
+    private final ClientRepository clientRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final HairdresserRepository hairdresserRepository;
+    private final SlotRepository slotRepository;
+    private final ServiceRepository serviceRepository;
+    private final HolidayRepository holidayRepository;
+
+    public AdminController(ClientRepository clientRepository, PasswordEncoder passwordEncoder,
+                           HairdresserRepository hairdresserRepository,
+                           SlotRepository slotRepository,
+                           ServiceRepository serviceRepository,
+                           HolidayRepository holidayRepository) {
+        this.clientRepository = clientRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.hairdresserRepository = hairdresserRepository;
+        this.slotRepository = slotRepository;
+        this.serviceRepository = serviceRepository;
+        this.holidayRepository = holidayRepository;
+    }
+    @GetMapping
+    public String adminPanel(Model model, Principal principal) {
+        List<HairdresserEntity>hairdressers = hairdresserRepository.findAll();
+        List<ClientEntity>clients = clientRepository.findAll();
+
+        model.addAttribute("moderators", hairdressers);
+        model.addAttribute("clients", clients);
+        model.addAttribute("packages", serviceRepository.findAll());
+
+
+        //Verificar si el usuario actual (admin) ya es peluquero
+        String currentUsername = principal.getName(); // nombre del usuario actual
+        HairdresserEntity currentHairdresser = hairdresserRepository.findByUsername(currentUsername);
+
+        model.addAttribute("isAdminHairdresserRegistered", currentHairdresser!=null);
+        List<ServiceEntity>service=serviceRepository.findAll();
+        service.forEach(s -> System.out.println(s.toString()));
+
+        return "admin";  // Esto cargará la vista 'admin.html'
+    }
+
+    @GetMapping("/createAdmin")
+    public String createAdmin() {
+        // Comprobar si el usuario administrador ya existe
+        if (clientRepository.findByUsername(Constants.ADMIN_NAME) == null) {
+            ClientEntity adminUser = new ClientEntity();
+            adminUser.setUsername(Constants.ADMIN_NAME);
+            adminUser.setEmail(Constants.ADMIN_EMAIL);
+            adminUser.setPhone(Constants.ADMIN_PHONE);
+            adminUser.setPassword(passwordEncoder.encode(Constants.ADMIN_PASSWORD)); // Contraseña encriptada
+            adminUser.setRoles(Set.of(Role.ADMIN, Role.MODERATOR));
+            clientRepository.save(adminUser);
+
+            return "Admin creado correctamente.";
+        }
+        return "El usuario administrador ya existe.";
+    }
+    @PostMapping("/deleteModerator/{id}")
+    public String deleteModerator(@PathVariable Long id) {
+        Optional<HairdresserEntity> optionalHairdresser = hairdresserRepository.findById(id);
+        if (optionalHairdresser.isPresent()) {
+            HairdresserEntity hairdresser = optionalHairdresser.get();
+            slotRepository.deleteAll(hairdresser.getSlots());
+            hairdresserRepository.delete(hairdresser);
+        }
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/admin/holidays/add")
+    public String addHoliday(@ModelAttribute HolidayEntity newHoliday) {
+        holidayRepository.save(newHoliday);
+        return "redirect:/admin";
+    }
+
+}

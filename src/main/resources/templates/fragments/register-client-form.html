@@ -1,0 +1,78 @@
+<div th:fragment="register-client-form">
+
+
+    <div class="form-container">
+        <h2>Registrar Cliente y Crear Cita</h2>
+        <form id="appointmentForm" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            <!-- Teléfono -->
+            <div class="mb-3">
+                <label class="form-label" for="phone">Teléfono del Cliente</label>
+                <input type="text" class="form-control" id="phone" name="phone" required th:value="${phone}" />
+                <!-- Mensaje del cliente -->
+                <div id="clientMessage" class="alert mt-2" style="display:none;"></div>
+
+            </div>
+
+            <!-- Nombre -->
+            <div class="mb-3">
+                <label class="form-label" for="username">Nombre del Cliente</label>
+                <input type="text" class="form-control" id="username" name="username" required th:value="${username}" />
+
+            </div>
+
+            <!-- Fecha -->
+            <div class="mb-3">
+                <label class="form-label" for="date">Fecha</label>
+                <input type="date" class="form-control" style="border-color: black !important; "id="date" name="date" th:value="${selectedDate}" required />
+            </div>
+            <!-- Servicio -->
+            <div class="mb-3">
+                <label class="form-label" for="packageId">Servicio</label>
+                <select class="form-control custom-select-transparent"
+                        id="packageId"
+                        name="packageId"
+                        onchange="submitToRefreshHours()">
+                    <option value="">-- Elige un servicio --</option>
+
+                    <option th:each="pkg : ${packages}"
+                            th:value="${pkg.id}"
+                            th:selected="${pkg.id == selectedPackageId}"
+                            th:text="${pkg.packageEnum != null ? pkg.packageEnum.displayName : pkg.description}">
+                    </option>
+
+                </select>
+            </div>
+
+            <!-- Horas (ahora con estilo visual badge) -->
+            <div class="mb-3" th:if="${hourRangePresentation != null}">
+                <label class="form-label">Selecciona una franja horaria:</label>
+                <div class="row g-2">
+                    <div class="col-12 col-sm-6 col-md-4" th:each="hourRange, iterStat : ${hourRangePresentation}">
+                        <label class="w-100 text-center">
+                            <input type="radio" name="selectedHourRange"
+                                   th:id="'hour-' + ${iterStat.index}"
+                                   th:value="${hourRange}"
+                                   class="radio-hidden"/>
+                            <span th:for="'hour-' + ${iterStat.index}"
+                                  th:text="${hourRange}"
+                                  class="badge badge-selectable w-100 py-2 badge_border_white">
+                    </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-outline-light"
+                        formaction="/moderator/refresh-hours"
+                        formmethod="post">
+                    Crear Cliente y Cita
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>

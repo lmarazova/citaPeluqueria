@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Peluquería</title>
+    <link rel="icon" type="image/x-icon" th:href="@{../img/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="register-page">
+<header th:replace="fragments/header :: header"></header>
+<div class="container mt-3">
+    <button type="button" class="btn btn-outline-light" onclick="history.back()">
+        ← Volver
+    </button>
+</div>
+<div class="container container-over-image mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-6 image-col order-1 order-md-2">
+            <img src="../img/register_moderator.png" alt="Imagen decorativa">
+        </div>
+        <div class="col-md-6 d-flex justify-content-center align-items-center order-2 order-md-1">
+            <div class="form-container form-over-image">
+            <form th:method="post"
+                  th:action="@{/register-moderator}"
+                  th:object="${hairdresserRegisterDTO}">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Usuario</label>
+                    <input type="text"
+                           class="form-control"
+                           id="username"
+                           name="username"
+                           th:field="*{username}"
+                           required />
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo electrónico</label>
+                    <input type="email"
+                           class="form-control"
+                           id="email"
+                           name="email"
+                           th:field="*{email}"
+                           required />
+                    <small class="text-danger" th:if="${#fields.hasErrors('email')}"
+                           th:text="${#fields.errors('email')[0]}">Email error message</small>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password"
+                           class="form-control"
+                           id="password"
+                           name="password"
+                           th:field="*{password}"
+                           required />
+                </div>
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                    <input type="password"
+                           class="form-control"
+                           id="confirmPassword"
+                           name="confirmPassword"
+                           th:field="*{confirmPassword}"
+                           required />
+                </div>
+                <small>
+                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                </small>
+                <button type="submit" class="btn btn-outline-light w-50">Registra el peluquero</button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments/footer :: footer"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

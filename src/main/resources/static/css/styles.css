@@ -1,0 +1,593 @@
+/* =========================================
+   ESTRUCTURA BÁSICA Y CUERPO
+========================================= */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  color: white !important; /* texto blanco general */
+}
+
+/* =========================================
+   VARIANTES DE BODY POR PÁGINA
+========================================= */
+body.index-page {
+  background-image: url('/img/fondo.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+body.register-page,
+body.login-page {
+  background-color: #5b2d20;
+}
+
+/* =========================================
+   TIPOGRAFÍA Y ENCABEZADOS
+========================================= */
+h1, h2, h3, h4 {
+  font-weight: 600;
+  color: white !important;
+}
+
+h4 {
+  margin-top: none;
+}
+
+.display-4 {
+  font-weight: 600;
+}
+
+.page-title {
+  margin: 5rem 0 !important;
+}
+
+.text-white {
+  --bs-text-opacity: 1;
+  color: white !important;
+}
+
+.text-danger {
+  color: #d9534f;
+}
+
+.text-success {
+  color: #28a745;
+}
+
+/* =========================================
+   LINKS EN MAIN
+========================================= */
+main a {
+  color: #f8f9fa !important;
+  transition: color 0.3s ease;
+}
+
+main a:hover,
+main a:focus {
+  color: #ffc107 !important;
+  text-decoration: underline;
+  outline: none;
+}
+
+main p {
+  font-size: 1.25rem;
+}
+
+/* =========================================
+   NAVBAR
+========================================= */
+.navbar.bg-light {
+  background-color: #BA5F46 !important;
+}
+
+.navbar.bg-light .navbar-brand,
+.navbar.bg-light .nav-link {
+  color: white !important;
+}
+
+.navbar.bg-light .nav-link:hover {
+  color: #ffe1d6 !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23ffffff' stroke-width='2' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22' /%3E%3C/svg%3E") !important;
+}
+
+.navbar-toggler {
+  border: white !important;
+}
+
+/* =========================================
+   FORMULARIOS Y CAMPOS
+========================================= */
+.form-label {
+  color: white;
+}
+
+.form-control,
+select.form-select,
+input.form-control {
+  background-color: transparent !important;
+  border-color: white !important;
+  color: white !important;
+  border-radius: 0;
+  padding: 0.6rem;
+}
+
+.form-select {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+input[type="date"] {
+  filter: invert(1);
+  background-color: transparent;
+  color: black !important;
+}
+
+/* Select transparente personalizado */
+.custom-select-transparent {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+.custom-select-transparent option {
+  background-color: #5b2d20;
+  color: white;
+}
+
+/* =========================================
+   CONTAINER SOBRE IMAGEN DE FONDO
+========================================= */
+.container-over-image {
+  position: relative;
+  min-height: 80vh;
+  overflow: hidden;
+}
+
+.image-col img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+
+.form-container {
+  width: 500px;
+  background-color: rgb(0 0 0 / 37%);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+.client-list {
+  padding-top: 6rem;
+}
+@media (min-width: 768px) {
+  .form-over-image {
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+}
+
+@media (max-width: 767px) {
+  .form-over-image {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .form-container {
+    width: 100%;
+  }
+
+  main h1 {
+    font-size: 2.5rem;
+  }
+}
+
+/* =========================================
+   COMPONENTES: TARJETAS, BADGES, ACCORDIONS
+========================================= */
+.card {
+  --bs-card-border-color: rgba(255, 255, 255, 1) !important;
+  --bs-card-border-radius: 0 !important;
+  background-color: transparent !important;
+  color: white !important;
+  border-radius: 1rem;
+  border: none;
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 0.5em 0.75em;
+  border-radius: 0.5rem;
+  --bs-badge-border-radius: 0;
+}
+
+.badge-selectable {
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  color: white;
+  background-color: transparent;
+  font-weight: 500;
+  display: inline-block;
+}
+
+input[type="radio"]:checked + .badge-selectable {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.badge_border_white {
+  border: 2px solid white;
+}
+
+.badge_border_white:hover {
+  background-color: white;
+  color: #5b2d20;
+  font-weight: 700;
+}
+
+.radio-hidden {
+  display: none;
+}
+
+.badge-fixed-size {
+  flex: 1 1 120px;
+  max-width: 140px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.accordion-button {
+  font-weight: bold;
+  font-size: 1.05rem;
+}
+
+.accordion-item {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.accordion-body {
+  background-color: transparent;
+}
+
+/* =========================================
+   LISTAS Y ELEMENTOS DINÁMICOS
+========================================= */
+.list-group-item {
+  border: none;
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-group-item-success {
+  background-color: #d1e7dd;
+}
+
+.list-group-item-danger {
+  background-color: #f8d7da;
+}
+
+.hairdresser-schedule {
+  transition: transform 0.2s ease;
+}
+
+.hairdresser-schedule:hover {
+  transform: scale(1.05);
+}
+
+/* =========================================
+   ESTADOS DE CITA
+========================================= */
+.occupied-slot {
+  background-color: #ffe5e5;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.available-slot {
+  background-color: #e5ffe5;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+/* =========================================
+   FICHA DE CLIENTE
+========================================= */
+.ficha {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+/* =========================================
+   MODAL
+========================================= */
+.modal-body {
+  background-color: #5b2d20;
+}
+
+/* =========================================
+   BOTONES
+========================================= */
+button.btn-success {
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+}
+
+.btn-hover-bold:hover {
+  font-weight: bold;
+}
+
+/* =========================================
+   PAQUETES Y SLOTS
+========================================= */
+.package-card-border {
+  border-style: solid !important;
+  border-color: white !important;
+  border-width: 1px;
+}
+
+.slot-badge {
+  width: 150px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+  cursor: default;
+}
+
+.slot-badge:hover {
+  transform: scale(1.05);
+}
+
+/* =========================================
+   TABLAS
+========================================= */
+.table {
+  --bs-table-bg: transparent !important;
+  --bs-table-color: white !important;
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+footer {
+  bottom: 0;
+  left: 0;
+  width: 100% !important;
+  background-color: #BA5F46;
+  padding: 1rem 0;
+  text-align: center;
+  color: white;
+  box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+}
+/* =========================================
+   TITULOS Y EXPLANATION - Estilo para la caja de explicación
+   en la sección de servicios básicos del sitio HTML
+========================================= */
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.explanation {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  border-left: 5px solid #BA5F46 !important;
+  padding: 1rem 1.5rem !important;
+  margin-bottom: 2rem !important;
+  border-radius: 6px !important;
+  font-size: 1rem !important;
+  color: white !important;
+  max-width: 650px !important;
+  line-height: 1.4 !important;
+}
+
+.explanation strong {
+  color: white !important;
+}
+
+/* =========================================
+   BLOQUES
+========================================= */
+.blocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.block {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: 0.2s ease;
+}
+
+.active {
+  background-color: #99ff9d;
+  color: #333;
+}
+
+.passive {
+  background-color: #ffc9e8;
+  color: #333;
+}
+
+.resume {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  color: white;
+}
+
+/* =========================================
+   LISTAS
+========================================= */
+.list-group {
+  --bs-list-group-color: #ffffff !important;
+  --bs-list-group-bg: #ffffff24 !important;
+}
+
+/* =========================================
+   PLACEHOLDERS
+========================================= */
+::placeholder {
+  color: white !important;
+  opacity: 1;
+}
+.alert {
+    color: white! important;
+    background-color: #ffffff24 !important;
+}
+.alert-info{
+    --bs-alert-border-color: none !important;
+}
+/*.active{
+    background-color: transparent !important;
+}*/
+/* RESET BÁSICO PARA EL CARRUSEL */
+#servicesCarousel {
+  height: 500px; /* Altura fija del contenedor */
+  position: relative;
+}
+
+.carousel-inner {
+  height: 100%;
+}
+
+/* ESTILOS PARA LAS CARDS UNIFORMES */
+.carousel-item {
+  height: 100%;
+  padding: 15px;
+}
+
+.carousel-item .card {
+  height: 100%;
+  display: flex;
+  border: 1px solid #ddd;
+}
+
+.carousel-item .row {
+  height: 100%;
+  margin: 0;
+  flex-wrap: nowrap; /* Importante para desktop */
+}
+
+.carousel-item .col-md-6 {
+  height: 100%;
+  padding: 0;
+}
+
+/* IMAGEN */
+.carousel-item img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* CONTENIDO */
+.carousel-item .card-body {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* INDICADORES VISIBLES */
+.carousel-indicators {
+  bottom: -40px;
+}
+
+.carousel-indicators button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #666;
+}
+
+.carousel-indicators .active {
+  background-color: #000;
+}
+
+/* VERSIÓN MÓVIL (Menos de 768px) */
+@media (max-width: 767.98px) {
+  #servicesCarousel {
+    height: auto;
+    min-height: 600px;
+  }
+
+
+  .carousel-item .card {
+    flex-direction: column; /* Cambia a columna en móvil */
+    height: auto;
+  }
+
+  .carousel-item .row {
+    flex-wrap: wrap; /* Permite que las columnas se apilen */
+    height: auto;
+  }
+
+  .carousel-item .col-md-6 {
+    width: 100% !important; /* Fuerza ancho completo */
+    height: auto; /* Altura automática */
+  }
+
+  /* Imagen en móvil (altura fija) */
+  .carousel-item .col-md-6:first-child {
+    height: 200px; /* Altura fija para la imagen */
+  }
+
+  /* Contenido en móvil */
+  .carousel-item .col-md-6:last-child {
+    height: auto; /* Altura flexible para el contenido */
+  }
+}
+.table>:not(caption)>*>* {
+    color: white !important;
+}
+.modal-body {
+    color: white !important;
+}

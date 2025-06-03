@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Peluquería</title>
+    <link rel="icon" type="image/x-icon" th:href="@{../img/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="register-page">
+<header th:replace="fragments/header :: header"></header>
+<main class="container mt-4">
+    <h1 class="page-title display-4 text-center">Bienvenido, <span th:text="${user.username}"></span>!</h1>
+    <h4 class="page-title display-4 text-center">Servicios Disponibles</h4>
+    <div class="row  mb-4">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+
+            <!-- Carrusel Bootstrap -->
+            <div id="servicesCarousel" class="carousel slide" data-bs-ride="false">
+                <!-- Indicadores -->
+                <div class="carousel-indicators">
+                    <button th:each="packageItem, stat : ${packages}"
+                            th:if="${packageItem.active}"
+                            type="button"
+                            data-bs-target="#servicesCarousel"
+                            th:data-bs-slide-to="${stat.index}"
+                            th:class="${stat.first} ? 'active' : ''"></button>
+                </div>
+
+                <!-- Slides -->
+                <div class="carousel-inner">
+                    <div th:each="packageItem, stat : ${packages}"
+                         th:if="${packageItem.active}"
+                         th:class="'carousel-item' + (${stat.first} ? ' active' : '')">
+                        <div class="card mb-3 list-group-item" style="max-width: 100%;">
+                            <div class="row g-0 package-card-border">
+                                <div class="col-12 col-md-6">
+                                    <img
+                                            class="img-fluid rounded-start h-100 w-100 object-fit-cover"
+                                            th:src="@{'/img/' + ${packageItem.packageEnum != null ? packageItem.packageEnum.displayName : packageItem.description} + '.png'}"
+                                            th:alt="${packageItem.packageEnum != null ? packageItem.packageEnum.displayName : packageItem.description}"
+                                    />
+                                </div>
+                                <div class="col-12 col-md-6 d-flex align-items-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title"
+                                            th:text="${packageItem.packageEnum != null ? packageItem.packageEnum.displayName : packageItem.description}"></h5>
+
+                                        <p class="card-text" th:text="'Precio: €' + ${packageItem.price}"></p>
+                                        <p class="card-text" th:text="'Duración: ' + ${packageItem.totalDuration} + ' minutos'"></p>
+                                        <p class="card-text">
+                                            <strong>Incluye:</strong>
+                                            <span th:each="service : ${packageItem.services}"
+                                                  th:text="${service.label != null ? service.label : service.name} + ' '"></span>
+                                        </p>
+                                        <form method="get" th:action="@{/selectAnHour}">
+                                            <input type="hidden" name="packageId" th:value="${packageItem.id}" />
+                                            <div class="row g-2 d-flex align-items-stretch">
+                                                <div class="col-12 col-md-auto d-flex flex-column">
+                                                    <label for="date" class="form-label">Fecha de la cita</label>
+                                                    <input type="date" class="form-control flex-grow-1" style="border-color: black !important;" id="date" name="date" required />
+                                                </div>
+                                                <div class="col-12 col-md-auto d-flex flex-column">
+                                                    <label class="form-label d-none d-md-block">&nbsp;</label>
+                                                    <button type="submit"
+                                                            class="form-control flex-grow-1 btn-hover-bold"
+                                                            style="border: none;">Ver Horarios</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controles -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#servicesCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#servicesCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+            <div class="alert alert-warning text-center" role="alert">
+                <strong>Nota:</strong> Los precios pueden estar sujetos a cambios.
+            </div>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+                <h4>Citas Agendadas</h4>
+                <div class="card mb-3" th:each="appointment : ${appointments}">
+                    <div class="card-body">
+                        <p>
+                            Servicio: <span th:text="${appointment.service.packageEnum.displayName}"></span><br>
+                            Horario: <span th:text="${appointment.selectedHourRange}"></span><br>
+                            Fecha: <span th:text="${appointment.date}"></span>
+                        </p>
+                        <form th:action="@{/home/delete/{id}(id=${appointment.id})}" method="post">
+                            <button type="submit" class="btn btn-danger">Borrar Cita</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<!-- Bootstrap JS (asegúrate de que está correctamente incluido) -->
+<!-- Versión oficial de Bootstrap 5.3.0 -->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous">
+</script>
+</body>
+</html>

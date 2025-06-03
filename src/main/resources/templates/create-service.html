@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Peluquería</title>
+    <link rel="icon" type="image/x-icon" th:href="@{../img/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+
+</head>
+<body class="register-page">
+<header th:replace="fragments/header :: header"></header>
+<div class="container mt-3">
+    <button type="button" class="btn btn-outline-light" onclick="history.back()">
+        ← Volver
+    </button>
+</div>
+<div class="container mt-5 text-white">
+    <div class="row g-4">
+        <!-- COLUMNA 1: Crear Servicio -->
+        <div class="col-md-6">
+            <div class="p-4 form-container shadow h-100">
+                <h2 class="mb-3">1. Crear Servicio</h2>
+                <p>Primero, disponemos de <strong>servicios básicos predefinidos</strong>. Puedes seleccionar uno o varios.</p>
+                <p>También puedes <strong>crear un nuevo servicio personalizado</strong>.</p>
+
+                <!-- Añadir nuevo servicio -->
+                <div class="mb-3">
+                    <label class="form-label">¿Quieres añadir otro servicio básico?</label><br>
+                    <button id="yesBtn" class="btn btn-outline-light">Sí</button>
+                    <button id="noBtn" class="btn btn-secondary">No</button>
+                </div>
+
+                <!-- NUEVO: Añade form -->
+                <form th:method="post" th:action="@{/services/add}">
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"
+                    />
+
+                    <div id="newServiceContainer" class="mb-4" style="display:none;">
+                        <label for="newServiceInput" class="form-label">Introduce el nombre del nuevo servicio:</label>
+                        <div class="d-flex gap-2">
+                            <input type="text" id="newServiceInput" name="label" class="form-control" placeholder="Ejemplo: Masaje capilar">
+                            <button id="addNewServiceBtn" class="btn btn-outline-light" type="submit">Añadir</button>
+                        </div>
+                    </div>
+                </form>
+
+
+
+                <!-- Lista de servicios -->
+
+                <div class="row g-4">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <form method="post" action="/" >
+                            <div class="mb-3">
+                                <label class="form-label">Selecciona los servicios básicos:</label>
+                                <ul class="list-group" id="servicesList">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                                        th:each="service : ${basicServices}"
+                                        th:if="${service.hairService != T(com.example.citaPeluqueria.domain.enums.HairService).CUSTOM ||
+                                       (service.hairService == T(com.example.citaPeluqueria.domain.enums.HairService).CUSTOM &&
+                                        service.customLabel != null &&
+                                        !#strings.isEmpty(service.customLabel.trim()))}">
+                                        <span th:text="${service.hairService.name() == 'CUSTOM' ? service.customLabel : service.hairService.label}"></span>
+
+                                        <div class="d-flex gap-2 ms-auto">
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-light"
+                                                    th:attr="data-id=${service.id}"
+                                                    onclick="addToPack(this)">
+                                                &rarr;
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    th:if="${service.hairService == T(com.example.citaPeluqueria.domain.enums.HairService).CUSTOM}"
+                                                    th:attr="data-id=${service.id}"
+                                                    onclick="deleteCustomService(this)">
+                                                ❌
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2"></div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUMNA 2: Diseña tu pack -->
+        <div class="col-md-6">
+            <div class="p-4 form-container shadow h-100">
+                <h2 class="mb-3">2. Diseña tu Pack de Servicio</h2>
+                <div id="selectedServicesContainer" style="margin-bottom: 1rem;">
+                    <h5>Servicios seleccionados:</h5>
+                    <span th:text="${packName}" id="packNameText"></span>
+                    <ul id="selectedServicesList" class="list-group"></ul>
+                    <button type="button" id="finalizeButton" class="btn btn-outline-light mt-2 w-100">
+                        ✔️ Confirmar servicios del paquete
+                    </button>
+                </div>
+                <form id="serviceForm" method="post" th:action="@{/show-services}" th:object="${someModel}" style="display:none">
+                    <input type="hidden" name="serviceJson" id="serviceJson">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn btn-outline-info mt-2 w-100">Ver en backend</button>
+                </form>
+                <h2 class="mb-3">3. Construye tu servicio completo por bloques de 15 minutos.</h2>
+
+                <ul>
+                    <li><strong>Activos:</strong> Corte, lavado, peinado...</li>
+                    <li><strong>Pasivos:</strong> Esperas, reposo, secado...</li>
+                </ul>
+
+                <ol>
+                    <li>+ Añadir bloque</li>
+                    <li>Haz clic para cambiar tipo</li>
+                    <li>Revisa el resumen</li>
+                </ol>
+
+                <div class="blocks" id="blocks">
+                    <!-- Aquí se añaden los bloques -->
+                </div>
+                <button class="btn btn-outline-light w-100 my-2" onclick="addBlock()">+ Añadir bloque</button>
+
+                <div class="resume" id="resume">
+                    Total: 0 min | Activos: 0 min | Pasivos: 0 min
+                </div>
+
+
+                <form id="blocksForm" method="post" th:action="@{/show-blocks}" th:object="${someModel}" style="display:none">
+                    <input type="hidden" name="blocksJson" id="blocksJson">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn btn-outline-info mt-2 w-100">Ver en backend</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-5 text-white">
+    <div class="row g-4">
+        <!-- COLUMNA 3: Escoge precio para este servicio -->
+        <div class="col-md-6">
+            <div class="p-4 form-container shadow h-100">
+                <h2 class="mb-3">4. Escoge precio para este servicio</h2>
+                <form id="priceForm" th:method="post" th:action="@{/submit-price}" th:object="${someModel}">
+                    <div class="mb-3">
+                        <label for="priceInput" class="form-label">Precio (€):</label>
+                        <input type="number" min="0" step="0.01" id="priceInput" name="price" class="form-control" placeholder="Introduce el precio del paquete">
+                    </div>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn btn-outline-light mt-2" style="display:none">Enviar precio</button>
+                </form>
+            </div>
+        </div>
+        <!-- COLUMNA 4: Opción para escoger foto y subirla -->
+        <div class="col-md-6">
+            <div class="p-4 form-container shadow h-100">
+                <h2 class="mb-3">5. Escoge foto para este servicio</h2>
+
+                <form id="uploadPhotoForm" th:method="post" th:action="@{/upload-photo}" enctype="multipart/form-data" style="display:none">
+                    <input type="file" name="photo" accept="image/*" required class="form-control mb-2">
+                    <input type="hidden" name="serviceJson" id="serviceJsonForUpload" th:value="${serviceJson}">
+                    <input type="hidden" name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn btn-outline-info w-100">Subir imagen</button>
+                </form>
+                <form id="sendAllForm" method="post" th:action="@{/submit-all}" enctype="multipart/form-data">
+                    <input type="hidden" name="serviceJson" id="serviceJsonAll">
+                    <input type="hidden" name="blocksJson" id="blocksJsonAll">
+                    <input type="hidden" name="price" id="priceAll">
+
+                    <input type="file" name="photo" accept="image/*" required class="form-control mb-2">
+
+                    <button type="submit" class="btn btn-outline-light w-100 mt-3">Enviar todo</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-center mt-3">
+
+</div>
+
+
+<script th:src="@{/js/blocks.js}"></script>
+<script th:src="@{/js/custom-services.js}"></script>
+<script th:src="@{/js/service-pack.js}"></script>
+<script th:src="@{/js/form-handlers.js}"></script>
+<script th:src="@{/js/finalize-pack.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
