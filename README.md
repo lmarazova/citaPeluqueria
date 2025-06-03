@@ -158,8 +158,8 @@ ActivationController, AppointmentController, AdminController, etc.
 
 ---
 
-## 📄 Licencia
+## Licencia
 
-Este proyecto está abierto al público para fines educativos y demostrativos. Puedes modificarlo libremente.
+Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más información.
 
 ---
