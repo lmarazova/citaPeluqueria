@@ -9,7 +9,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * Componente que inicializa los servicios de peluquería en la base de datos al arrancar la aplicación,
+ * si aún no existen registros.
+ *
+ * <p>Este inicializador recorre todos los valores definidos en {@link ServicePackageEnum} y
+ * crea entidades {@link ServiceEntity} con datos asociados como precio, duración y lista de servicios.
+ * La lógica de precios, duración y servicios asociados está centralizada en métodos privados.
+ */
 @Component
 public class ServiceInit implements CommandLineRunner {
 
@@ -19,6 +26,9 @@ public class ServiceInit implements CommandLineRunner {
         this.serviceRepository = serviceRepository;
     }
 
+     /**
+     * Ejecuta la lógica de inicialización si la base de datos no contiene ya servicios registrados.
+     */
     @Override
     public void run(String... args) {
         if (serviceRepository.count() > 0) {
@@ -40,6 +50,12 @@ public class ServiceInit implements CommandLineRunner {
         serviceRepository.saveAll(services);
     }
 
+    /**
+     * Devuelve el precio correspondiente al paquete de servicio.
+     *
+     * @param pkg el paquete de servicio
+     * @return precio en euros
+     */
     private double getPriceFor(ServicePackageEnum pkg) {
         return switch (pkg) {
             case CUT_WASH_BLOWDRY -> 25;
@@ -58,7 +74,12 @@ public class ServiceInit implements CommandLineRunner {
             case HYDRATION_BLOWDRY -> 34;
         };
     }
-
+    /**
+     * Devuelve la duración total en minutos del paquete de servicio.
+     *
+     * @param pkg el paquete de servicio
+     * @return duración en minutos
+     */
     private int getDurationFor(ServicePackageEnum pkg) {
         return switch (pkg) {
             case CUT_WASH_BLOWDRY -> 45;
@@ -77,7 +98,12 @@ public class ServiceInit implements CommandLineRunner {
             case HYDRATION_BLOWDRY -> 45;
         };
     }
-
+    /**
+     * Devuelve la lista de servicios individuales ({@link HairService}) que componen un paquete.
+     *
+     * @param pkg el paquete de servicio
+     * @return lista de servicios
+     */
     private List<HairService> getHairServicesFor(ServicePackageEnum pkg) {
         return switch (pkg) {
             case CUT_WASH_BLOWDRY -> List.of(HairService.CUT, HairService.WASH, HairService.BLOWDRY);

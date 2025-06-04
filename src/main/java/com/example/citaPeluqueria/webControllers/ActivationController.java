@@ -13,7 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
-
+/**
+ * Controlador responsable de activar cuentas de usuario mediante un token enviado por correo.
+ *
+ * Endpoints:
+ *  - GET /activate?token={token}: Activa la cuenta si el token es válido.
+ */
 @Controller
 public class ActivationController {
     @Autowired
@@ -23,6 +28,13 @@ public class ActivationController {
     @Autowired
     private ClientRepository clientRepository;
 
+    /**
+     * Activa la cuenta de usuario usando un token de verificación.
+     *
+     * @param token Token de activación recibido por email.
+     * @param redirectAttributes Atributos de redirección para mostrar mensajes flash.
+     * @return Redirección al login con mensaje de éxito o error.
+     */
     @Transactional
     @GetMapping("/activate")
     public String activateUser(@RequestParam("token") String token, RedirectAttributes redirectAttributes) {

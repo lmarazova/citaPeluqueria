@@ -19,7 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-
+/**
+ * Controlador encargado del flujo de reservas de citas:
+ * selección de fecha, hora y confirmación de la cita.
+ *
+ * Endpoints:
+ *  - GET /selectAnHour: Muestra las franjas disponibles según el servicio y la fecha.
+ *  - POST /selectSlot: Crea la cita si se encuentra una franja válida.
+ */
 @Controller
 public class AppointmentController {
 
@@ -42,6 +49,16 @@ public class AppointmentController {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
+
+    /**
+     * Muestra las franjas horarias disponibles para una fecha y servicio seleccionados.
+     *
+     * @param packageId ID del servicio seleccionado.
+     * @param date Fecha seleccionada.
+     * @param principal Información del usuario logueado.
+     * @param model Modelo para la vista.
+     * @return Vista con las horas disponibles ("hours-available").
+     */
     @GetMapping("/selectAnHour")
     public String selectAnHour(@RequestParam("packageId") Long packageId,
                                @RequestParam("date") String date,
@@ -53,6 +70,16 @@ public class AppointmentController {
         return "hours-available";
     }
 
+    /**
+     * Procesa la selección de una franja horaria y crea la cita si es válida.
+     *
+     * @param selectedHourRange Rango horario seleccionado.
+     * @param packageId ID del servicio.
+     * @param date Fecha seleccionada.
+     * @param model Modelo para mensajes de error.
+     * @param principal Usuario actual.
+     * @return Redirección a la home si se crea la cita, o página de error si falla.
+     */
     @PostMapping("/selectSlot")
     public String selectSlot(@RequestParam("selectedHourRange") String selectedHourRange,
                              @RequestParam("packageId") Long packageId,

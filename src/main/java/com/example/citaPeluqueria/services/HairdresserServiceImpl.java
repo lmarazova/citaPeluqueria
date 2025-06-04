@@ -12,7 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
-
+/**
+ * Implementación del servicio {@link HairdresserService} que permite
+ * registrar peluqueros en el sistema.
+ */
 @Service
 public class HairdresserServiceImpl implements HairdresserService{
     @Autowired
@@ -24,7 +27,12 @@ public class HairdresserServiceImpl implements HairdresserService{
 
 
 
-
+    /**
+     * Registra un nuevo peluquero convirtiendo el DTO a entidad, cifrando su contraseña
+     * y asignando el rol {@link Role#MODERATOR}.
+     *
+     * @param hairdresserRegisterDTO objeto con los datos necesarios para crear un peluquero.
+     */
     @Override
     public void registerHairdresser(HairdresserRegisterDTO hairdresserRegisterDTO) {
         HairdresserEntity hairdresser = modelMapper.map(hairdresserRegisterDTO, HairdresserEntity.class);

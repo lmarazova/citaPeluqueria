@@ -18,7 +18,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
+/**
+ * Controlador para la gestión del restablecimiento de contraseñas.
+ * Permite a los usuarios solicitar un enlace de recuperación y cambiar su contraseña.
+ */
 @Controller
 public class PasswordResetController {
     @Autowired
@@ -28,11 +31,23 @@ public class PasswordResetController {
     @Autowired
     private JavaMailSender mailSender;
 
+    /**
+     * Muestra la página para solicitar el restablecimiento de contraseña.
+     *
+     * @return Nombre de la vista "forgot-password".
+     */
     @GetMapping("/forgot-password")
     public String showForgotPasswordPage() {
         return "forgot-password";
     }
 
+    /**
+     * Procesa la solicitud de restablecimiento de contraseña.
+     *
+     * @param email Correo electrónico del usuario que solicita el restablecimiento.
+     * @param redirectAttributes Atributos para mensajes de feedback en la redirección.
+     * @return Redirección a la página de inicio de sesión o solicitud de restablecimiento.
+     */
     @PostMapping("/forgot-password")
     public String processForgotPassword(@RequestParam("email") String email,
                                         RedirectAttributes redirectAttributes) {
@@ -63,6 +78,14 @@ public class PasswordResetController {
         redirectAttributes.addFlashAttribute("success", "Se ha enviado un correo con instrucciones.");
         return "redirect:/login";
     }
+
+    /**
+     * Muestra el formulario de restablecimiento de contraseña si el token es válido.
+     *
+     * @param token Token de verificación para validar la solicitud.
+     * @param model Modelo para pasar información a la vista.
+     * @return Nombre de la vista "reset-password".
+     */
     @GetMapping("/reset-password")
     public String showResetForm(@RequestParam("token") String token, Model model) {
         VerificationToken vt = tokenRepository.findByToken(token);
@@ -74,6 +97,16 @@ public class PasswordResetController {
         return "reset-password";
     }
 
+
+    /**
+     * Maneja la actualización de la contraseña del usuario.
+     *
+     * @param token Token de verificación recibido por el usuario.
+     * @param password Nueva contraseña ingresada.
+     * @param confirmPassword Confirmación de la nueva contraseña.
+     * @param redirectAttributes Atributos para mensajes de feedback en la redirección.
+     * @return Redirección a la página de inicio de sesión o a la solicitud de restablecimiento.
+     */
     @PostMapping("/reset-password")
     @Transactional
     public String handlePasswordReset(@RequestParam("token") String token,

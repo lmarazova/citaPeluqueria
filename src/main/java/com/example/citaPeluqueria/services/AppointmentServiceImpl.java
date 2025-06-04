@@ -20,10 +20,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
-
+/**
+ * Implementación del servicio de citas. Gestiona la creación, eliminación y visualización
+ * de citas para los clientes, incluyendo lógica de asignación de franjas horarias.
+ */
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
 
+    // Repositorios y servicios necesarios para la lógica de negocio
+
+    /**
+     * Constructor para la inyección de dependencias principales.
+     */
     private final AppointmentRepository appointmentRepository;
     private final SlotRepository slotRepository;
     @Autowired
@@ -45,12 +53,17 @@ public class AppointmentServiceImpl implements AppointmentService{
         this.clientRepository = clientRepository;
     }
 
-
+    /**
+     * Obtiene todas las citas del usuario proporcionado.
+     */
     @Override
     public List<AppointmentEntity> getAppointmentsByUser(ClientEntity user) {
         return appointmentRepository.findByUser(user);
     }
 
+    /**
+     * Prepara el modelo de la vista con información necesaria para seleccionar una hora de cita.
+     */
     @Override
     public void prepareHourSelectionView(Model model, Long packageId, String date, ClientEntity user) {
         ServiceEntity service = serviceService.getById(packageId);
@@ -83,7 +96,9 @@ public class AppointmentServiceImpl implements AppointmentService{
         model.addAttribute("packageId", packageId);
     }
 
-
+    /**
+     * Crea una nueva cita con la información proporcionada si hay disponibilidad.
+     */
     @Override
     public boolean createAppointment(String selectedHourRange, Long packageId, String date, ClientEntity user) {
         LocalDate localDate = LocalDate.parse(date);
@@ -122,6 +137,9 @@ public class AppointmentServiceImpl implements AppointmentService{
         return true;
     }
 
+    /**
+     * Elimina una cita del usuario si le pertenece, liberando sus franjas.
+     */
     @Override
     public void deleteClientAppointment(Long appointmentId, Principal principal) {
 
@@ -152,6 +170,9 @@ public class AppointmentServiceImpl implements AppointmentService{
         }
     }
 
+    /**
+     * Elimina una cita concreta por cliente, fecha y rango horario.
+     */
     @Override
     public void deleteByClientDateAndHourRange(Long userId, String date, String selectedHourRange) {
         //LocalDate parsedDate = LocalDate.parse(date);

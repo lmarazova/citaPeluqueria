@@ -23,7 +23,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
-
+/**
+ * Controlador encargado de gestionar la vista y las operaciones del moderador.
+ * Permite visualizar la planificación del peluquero, gestionar citas para clientes (invitados o registrados)
+ * y verificar la existencia de clientes por teléfono.
+ *
+ * Las operaciones de este controlador están disponibles únicamente para usuarios autenticados con rol de moderador.
+ */
 @Controller
 public class ModeratorController {
 
@@ -52,6 +58,15 @@ public class ModeratorController {
         this.appointmentRepository = appointmentRepository;
     }
 
+
+    /**
+     * Muestra la página principal del moderador, incluyendo la agenda del peluquero autenticado,
+     * los slots disponibles y los paquetes de servicios configurados.
+     *
+     * @param model Modelo para Thymeleaf con los datos a renderizar.
+     * @param principal Usuario autenticado actualmente.
+     * @return Vista "moderator" con los datos cargados.
+     */
     @GetMapping("moderator")
     public String showModeratorPage(Model model, Principal principal){
         String username = principal.getName();
@@ -72,7 +87,20 @@ public class ModeratorController {
     }
 
 
-
+    /**
+     * Recarga la agenda para una fecha específica y un paquete seleccionado,
+     * en el contexto de agendar una cita para un cliente invitado.
+     *
+     * Si el cliente no existe por teléfono, se crea automáticamente.
+     *
+     * @param username Nombre del cliente invitado.
+     * @param phone Teléfono del cliente invitado.
+     * @param packageId ID del paquete de servicios seleccionado.
+     * @param date Fecha seleccionada (formato yyyy-MM-dd).
+     * @param model Modelo para la vista.
+     * @param principal Usuario autenticado (moderador).
+     * @return Vista "moderator" actualizada con las franjas disponibles.
+     */
     @GetMapping("/moderator/refresh-hours")
     public String refreshHoursForGuest(@RequestParam String username,
                                        @RequestParam String phone,
@@ -99,8 +127,20 @@ public class ModeratorController {
     }
 
 
+    /**
+     * Crea una cita para un cliente invitado, asignándole un paquete y una franja horaria específica.
+     * Se asegura de que exista la franja y el cliente en la base de datos.
+     *
+     * @param username Nombre del cliente invitado.
+     * @param phone Teléfono del cliente.
+     * @param packageId ID del paquete de servicios.
+     * @param date Fecha de la cita (formato yyyy-MM-dd).
+     * @param selectedHourRange Rango horario seleccionado (ej. "10:00-10:30").
+     * @param model Modelo de datos para la vista.
+     * @param principal Usuario autenticado (moderador).
+     * @return Redirección a la página principal del moderador o vista de error.
+     */
 
-    // Método para manejar la creación del cliente y la cita
     @PostMapping("/moderator/refresh-hours")
     public String createGuestAppointment(@RequestParam String username,
                                          @RequestParam String phone,
@@ -121,6 +161,15 @@ public class ModeratorController {
         }
         return "redirect:/moderator"; // Redirigir a la lista de citas del moderador
     }
+
+    /**
+     * Consulta rápida desde el frontend para verificar si existe un cliente con el teléfono dado.
+     * Devuelve el nombre de usuario si se encuentra.
+     * Útil para autocompletar datos del formulario al agendar una cita.
+     *
+     * @param phone Número de teléfono a buscar.
+     * @return Un mapa con el nombre del cliente o 404 si no existe.
+     */
     @GetMapping("/moderator/check-client")
     @ResponseBody
     public ResponseEntity<Map<String, String>> checkClient(@RequestParam String phone) {

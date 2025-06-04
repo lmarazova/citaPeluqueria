@@ -10,7 +10,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
-
+/**
+ * Clase de configuración que crea un usuario administrador por defecto al iniciar la aplicación.
+ *
+ * Implementa {@link CommandLineRunner} para ejecutar código justo después de que el contexto de Spring esté listo.
+ *
+ * - Comprueba si ya existe un usuario administrador con el nombre definido en {@code Constants.ADMIN_NAME}.
+ * - Si no existe, crea un nuevo usuario administrador con roles ADMIN y MODERATOR.
+ * - La contraseña del administrador se encripta usando {@link PasswordEncoder}.
+ *
+ * Esto asegura que siempre haya un usuario administrador disponible para gestionar la aplicación.
+ */
 @Configuration
 public class AdminUserCreator implements CommandLineRunner {
     private final HairdresserRepository hairdresserRepository;

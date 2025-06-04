@@ -26,7 +26,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-
+/**
+ * Implementación de {@link SlotService} que gestiona la creación, búsqueda y eliminación de franjas horarias.
+ */
 @Service
 public class SlotServiceImpl implements SlotService, CommandLineRunner {
 
@@ -48,14 +50,20 @@ public class SlotServiceImpl implements SlotService, CommandLineRunner {
         this.slotRepository = slotRepository;
         this.holidayRepository = holidayRepository;
     }
+    // Logger, repositorios y dependencias inyectadas...
 
+    /**
+     * Carga automáticamente las franjas horarias al iniciar la aplicación.
+     */
     @Override
     @Transactional
     public void run(String... args) throws Exception {
         loadSlots();
     }
 
-    // Método que se encarga de cargar las franjas
+    /**
+     * Genera franjas horarias para cada peluquero si no existen ya.
+     */
     public void loadSlots() {
         // Obtener todos los peluqueros
         List<HairdresserEntity> hairdressers = hairdresserRepository.findAll();
@@ -133,7 +141,9 @@ public class SlotServiceImpl implements SlotService, CommandLineRunner {
         scheduleSlotCleanup();
     }
 
-    // Método para programar el borrado de franjas al final del día
+    /**
+     * Programa el borrado de franjas horarias al final del día actual.
+     */
     public void scheduleSlotCleanup() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime midnight = now.withHour(23).withMinute(59).withSecond(0).withNano(0);
@@ -154,7 +164,9 @@ public class SlotServiceImpl implements SlotService, CommandLineRunner {
         }
     }
 
-    // Método para eliminar las franjas del día actual
+    /**
+     * Elimina las franjas correspondientes al día actual.
+     */
     public void deleteSlotsForToday() {
         LocalDateTime today = LocalDateTime.now().withHour(Constants.START_HOUR).withMinute(0).withSecond(0).withNano(0);
 
@@ -192,6 +204,8 @@ public class SlotServiceImpl implements SlotService, CommandLineRunner {
 
         return searchPattern(slotPattern, availableSlots);
     }
+
+
     @Override
     public List<List<SlotEntity>> getAvailableSlotCombinations(LocalDate localDate, Long packageId) {
         Optional<ServiceEntity> optionalPackage = serviceRepository.findById(packageId);
@@ -232,6 +246,10 @@ public class SlotServiceImpl implements SlotService, CommandLineRunner {
 
         return validCombinations;
     }
+
+    /**
+     * Algoritmo recursivo para generar combinaciones de franjas válidas según un patrón.
+     */
     private void generateCombinations(
             LocalDateTime currentTime,
             List<SlotStatus> pattern,
@@ -268,7 +286,9 @@ public class SlotServiceImpl implements SlotService, CommandLineRunner {
     }
 
 
-
+    /**
+     * Busca franjas que coincidan con un patrón de estados (FREE, OCCUPIED, etc.).
+     */
     public List<SlotEntity> searchPattern(List<SlotStatus> slotPattern, List<SlotEntity> availableSlots) {
         List<SlotEntity> validSlots = new ArrayList<>();
         int patternIndex = 0;  // Índice del patrón actual

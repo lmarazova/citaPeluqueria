@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
 import java.util.List;
-
+/**
+ * Controlador principal de la aplicación de citas para peluquería.
+ * Maneja las solicitudes relacionadas con la visualización y eliminación de citas.
+ */
 @Controller
 public class HomeController {
     @Autowired
@@ -31,7 +34,13 @@ public class HomeController {
     AppointmentService appointmentService;
     private final AppointmentRepository appointmentRepository;
     private final SlotRepository slotRepository;
-
+    /**
+     * Constructor para inyectar repositorios y servicios necesarios.
+     *
+     * @param serviceRepository Repositorio de servicios disponibles.
+     * @param appointmentRepository Repositorio de citas.
+     * @param slotRepository Repositorio de horarios disponibles.
+     */
     public HomeController(ServiceRepository serviceRepository,
                           AppointmentRepository appointmentRepository,
                           SlotRepository slotRepository) {
@@ -39,7 +48,14 @@ public class HomeController {
         this.appointmentRepository = appointmentRepository;
         this.slotRepository = slotRepository;
     }
-
+    /**
+     * Maneja la solicitud GET para la página de inicio.
+     * Carga información del usuario, servicios y citas.
+     *
+     * @param model Modelo para pasar datos a la vista.
+     * @param principal Usuario autenticado.
+     * @return Nombre de la vista a renderizar ("home").
+     */
     @GetMapping("/home")
     public String home(Model model, Principal principal) {
         UserEntity user = clientRepository.findByEmail(principal.getName());
@@ -53,6 +69,14 @@ public class HomeController {
 
         return "home";
     }
+
+    /**
+     * Maneja la eliminación de una cita mediante solicitud POST.
+     *
+     * @param appointmentId ID de la cita a eliminar.
+     * @param principal Usuario autenticado.
+     * @return Redirección a la página de inicio.
+     */
     @PostMapping("/home/delete/{id}")
     public String deleteAppointment(@PathVariable("id") Long appointmentId, Principal principal) {
         appointmentService.deleteClientAppointment(appointmentId, principal);

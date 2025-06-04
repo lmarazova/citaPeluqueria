@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-
+/**
+ * Controlador para gestionar el registro de peluqueros/moderadores.
+ * Permite a los usuarios registrarse como peluqueros y precargar datos si ya están logueados.
+ */
 @Controller
 public class RegisterModeratorController {
     @Autowired
@@ -29,6 +32,14 @@ public class RegisterModeratorController {
     private ClientRepository clientRepository;
 
 
+    /**
+     * Muestra el formulario de registro de peluquero/moderador.
+     *
+     * @param self Indica si el usuario se está registrando a sí mismo como peluquero.
+     * @param model Modelo para pasar información a la vista.
+     * @param principal Usuario autenticado.
+     * @return Nombre de la vista de registro de moderador ("register-moderator").
+     */
     @GetMapping("/register-moderator")
     public String showRegisterModerator(@RequestParam(value = "self", required = false) Boolean self,
                                         Model model,
@@ -49,22 +60,36 @@ public class RegisterModeratorController {
         model.addAttribute("hairdresserRegisterDTO", dto);
         return "register-moderator";
     }
+
+    /**
+     * Procesa el registro de un peluquero/moderador.
+     *
+     * @param hairdresserRegisterDTO Datos del peluquero a registrar.
+     * @param bindingResult Resultado de la validación del formulario.
+     * @param model Modelo para pasar datos a la vista.
+     * @return Redirección a la página de administrador si el registro es exitoso,
+     *         o muestra el formulario nuevamente si hay errores.
+     */
     @PostMapping("/register-moderator")
     public String registerUser(@Valid HairdresserRegisterDTO hairdresserRegisterDTO,
                                BindingResult bindingResult,
                                Model model){
+        // Validar errores en el formulario
         if(bindingResult.hasErrors()){
             model.addAttribute("hairdresserRegisterDTO", hairdresserRegisterDTO);
             return "register-moderator";
         }
+        // Verificar si el email ya está registrado
         if(hairdresserRepository.existsByEmail(hairdresserRegisterDTO.getEmail())){
             model.addAttribute("error", "Este correo ya está registrado");
             return "register-moderator";
         }
+        // Verificar si las contraseñas coinciden
         if(!hairdresserRegisterDTO.getPassword().equals(hairdresserRegisterDTO.getConfirmPassword())){
             model.addAttribute("error", "las contraseñas elegidas no coinciden");
             return "register-moderator";
         }
+        // Registrar al peluquero/moderador
         hairdresserService.registerHairdresser(hairdresserRegisterDTO);
         return "redirect:/admin";
     }

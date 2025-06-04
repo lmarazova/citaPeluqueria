@@ -18,7 +18,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
-
+/**
+ * Implementación de ClientService.
+ * Maneja el registro de usuarios, gestión de invitados, recuperación por teléfono
+ * y el envío de correos electrónicos para verificación de cuentas.
+ */
 @Service
 public class ClientServiceImpl implements ClientService{
     @Autowired
@@ -32,6 +36,9 @@ public class ClientServiceImpl implements ClientService{
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
 
+    /**
+     * Registra un nuevo usuario codificando su contraseña y enviando un correo de verificación.
+     */
     @Override
     public void registerUser(UserRegisterDTO userRegisterDTO) {
         ClientEntity user = modelMapper.map(userRegisterDTO, ClientEntity.class);
@@ -49,6 +56,9 @@ public class ClientServiceImpl implements ClientService{
         sendVerificationEmail(user.getEmail(), token);
     }
 
+    /**
+     * Busca o crea un cliente con rol de invitado si no existe.
+     */
     @Override
     public ClientEntity findOrCreateGuest(String username, String phone) {
 
@@ -65,10 +75,17 @@ public class ClientServiceImpl implements ClientService{
         return clientRepository.save(newUser);
     }
 
+    /**
+     * Devuelve un cliente según su número de teléfono.
+     */
     @Override
     public ClientEntity findByPhone(String phone) {
         return clientRepository.findByPhone(phone);
     }
+
+    /**
+     * Envía un correo electrónico con un enlace de activación.
+     */
     @Override
     public void sendVerificationEmail(String email, String token) {
         String url = "http://localhost:8082/activate?token=" + token;

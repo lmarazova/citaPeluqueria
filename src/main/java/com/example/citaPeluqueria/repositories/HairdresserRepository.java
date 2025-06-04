@@ -18,5 +18,4 @@ public interface HairdresserRepository extends JpaRepository<HairdresserEntity, 
     HairdresserEntity findByUsername(String name);
 
 
-    // List<HairdresserRepository> findByAvailableTimeSlotsStartTimeAndEndTime(LocalDateTime startTime, LocalDateTime endTime);
 }

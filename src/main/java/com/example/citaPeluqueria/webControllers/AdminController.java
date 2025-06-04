@@ -13,7 +13,16 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
+/**
+ * Controlador para operaciones administrativas de la aplicación.
+ * Permite gestionar clientes, moderadores, servicios y festivos.
+ *
+ * Endpoints:
+ *  - GET /admin: Muestra el panel de administración.
+ *  - GET /admin/createAdmin: Crea el usuario administrador por defecto si no existe.
+ *  - POST /admin/deleteModerator/{id}: Elimina un moderador (peluquero) y sus franjas horarias.
+ *  - POST /admin/holidays/add: Añade un día festivo desde el panel admin.
+ */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -37,6 +46,14 @@ public class AdminController {
         this.serviceRepository = serviceRepository;
         this.holidayRepository = holidayRepository;
     }
+
+    /**
+     * Muestra el panel de administración.
+     *
+     * @param model Modelo para la vista.
+     * @param principal Información del usuario autenticado.
+     * @return Vista "admin.html".
+     */
     @GetMapping
     public String adminPanel(Model model, Principal principal) {
         List<HairdresserEntity>hairdressers = hairdresserRepository.findAll();
@@ -58,6 +75,11 @@ public class AdminController {
         return "admin";  // Esto cargará la vista 'admin.html'
     }
 
+    /**
+     * Crea el usuario administrador por defecto si no existe.
+     *
+     * @return Mensaje de éxito o aviso si ya existe.
+     */
     @GetMapping("/createAdmin")
     public String createAdmin() {
         // Comprobar si el usuario administrador ya existe
@@ -74,6 +96,13 @@ public class AdminController {
         }
         return "El usuario administrador ya existe.";
     }
+
+    /**
+     * Elimina un moderador (peluquero) y sus franjas horarias.
+     *
+     * @param id ID del moderador a eliminar.
+     * @return Redirección al panel de administración.
+     */
     @PostMapping("/deleteModerator/{id}")
     public String deleteModerator(@PathVariable Long id) {
         Optional<HairdresserEntity> optionalHairdresser = hairdresserRepository.findById(id);
@@ -85,6 +114,12 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    /**
+     * Añade un nuevo día festivo desde el panel admin.
+     *
+     * @param newHoliday Entidad del nuevo festivo.
+     * @return Redirección al panel de administración.
+     */
     @PostMapping("/admin/holidays/add")
     public String addHoliday(@ModelAttribute HolidayEntity newHoliday) {
         holidayRepository.save(newHoliday);

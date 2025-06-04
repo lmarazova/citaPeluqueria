@@ -36,7 +36,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
-
+/**
+ Controlador encargado de gestionar la creación de paquetes de servicios personalizados,
+ incluyendo selección de servicios, definición de bloques de tiempo, subida de imágenes
+ asociadas y envío final de la información.
+ */
 @Controller
 public class CreateServiceController {
     @Autowired
@@ -52,6 +56,15 @@ public class CreateServiceController {
     @Autowired
     private HairServiceService hairServiceService;
 
+
+    /**
+     * Muestra la página de creación de servicios.
+     * Carga todos los servicios existentes y opcionalmente un JSON de servicios seleccionados.
+     *
+     * @param serviceJson JSON con servicios seleccionados (opcional).
+     * @param model Modelo para enviar datos a la vista.
+     * @return Nombre de la vista: create-service.
+     */
     @GetMapping("/create-service")
     public String showCreateService(@RequestParam(required = false) String serviceJson, Model model){
         /*List<HairServiceEntity>services = hairServiceRepository.findByHairServiceNot(HairService.CUSTOM);*/
@@ -60,6 +73,14 @@ public class CreateServiceController {
         model.addAttribute("serviceJson", serviceJson);
         return "create-service";
     }
+
+    /**
+     * Procesa los bloques seleccionados por el usuario desde el frontend y los convierte
+     * en estados de slots.
+     *
+     * @param blocksJson JSON con bloques seleccionados.
+     * @return Redirección a la página de creación de servicio.
+     */
     @PostMapping("/show-blocks")
     public String showBlocks(@RequestParam("blocksJson") String blocksJson) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -69,6 +90,14 @@ public class CreateServiceController {
         return "redirect:/create-service";
 
     }
+
+    /**
+     * Procesa los servicios seleccionados y construye un nombre de paquete a partir de ellos.
+     *
+     * @param serviceJson JSON con servicios seleccionados.
+     * @param model Modelo para enviar datos a la vista.
+     * @return Nombre de la vista: create-service.
+     */
     @PostMapping("/show-services")
     public String showServices(@RequestParam("serviceJson") String serviceJson, Model model) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -84,6 +113,14 @@ public class CreateServiceController {
         return "create-service";
     }
 
+
+    /**
+     * Permite al usuario agregar un nuevo servicio personalizado (etiqueta).
+     *
+     * @param label Nombre del servicio personalizado.
+     * @param model Modelo para la vista.
+     * @return Redirección a la página de creación.
+     */
     @PostMapping("/services/add")
     public String addServiceCustom(@RequestParam("label")String label, Model model){
         System.out.println("Label recibido: " + label);
@@ -92,12 +129,19 @@ public class CreateServiceController {
             customService.setHairService(HairService.CUSTOM);
             customService.setCustomLabel(label.trim());
             hairServiceRepository.save(customService);
-
             List<HairServiceEntity> allServices = hairServiceRepository.findAll();
             model.addAttribute("basicServices", allServices);
         }
         return "redirect:/create-service";
     }
+
+
+    /**
+     * Elimina un servicio personalizado por su ID.
+     *
+     * @param id ID del servicio a eliminar.
+     * @return 200 OK si se elimina correctamente, 404 si no existe o no es personalizado.
+     */
     @DeleteMapping("/delete-custom-service/{id}")
     @ResponseBody
     public ResponseEntity<Void> deleteCustomService(@PathVariable Long id) {
@@ -113,6 +157,15 @@ public class CreateServiceController {
 
         return ResponseEntity.notFound().build();
     }
+
+    /**
+     * Maneja la subida de una foto para asociarla con el paquete de servicios.
+     *
+     * @param photo Archivo de imagen.
+     * @param serviceJson JSON con servicios seleccionados.
+     * @param model Modelo para la vista.
+     * @return Nombre de la vista: create-service.
+     */
     @PostMapping("/upload-photo")
 
     public String handlePhotoUpload(@RequestParam("photo") MultipartFile photo,
@@ -150,12 +203,32 @@ public class CreateServiceController {
         return "create-service"; // O la vista que prefieras
     }
 
+
+    /**
+     * Recoge el precio ingresado por el usuario (provisional).
+     *
+     * @param price Precio ingresado.
+     * @return Redirección a la página de creación.
+     */
     @PostMapping("/submit-price")
     public String submitPrice(@RequestParam("price") String price) {
         System.out.println("PRECIO RECIBIDO: " + price);
         // Aquí puedes redirigir o devolver una vista
         return "redirect:/create-service"; // Ajusta al nombre de tu vista o ruta
     }
+
+    /**
+     * Método final que procesa todos los datos del formulario:
+     * servicios seleccionados, bloques, precio e imagen subida.
+     * Crea y guarda el paquete de servicios en la base de datos.
+     *
+     * @param serviceJson JSON con servicios seleccionados.
+     * @param blocksJson JSON con bloques seleccionados.
+     * @param price Precio final del paquete.
+     * @param photo Imagen subida.
+     * @param model Modelo para la vista.
+     * @return Nombre de la vista: create-service.
+     */
     @PostMapping("/submit-all")
     public String submitAll(
             @RequestParam("serviceJson") String serviceJson,

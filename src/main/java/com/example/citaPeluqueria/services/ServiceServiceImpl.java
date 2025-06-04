@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+/**
+ * Implementación de {@link ServiceService} que gestiona lógica relacionada con los servicios (paquetes).
+ */
 @Service
 public class ServiceServiceImpl implements ServiceService{
     private final ObjectMapper mapper;

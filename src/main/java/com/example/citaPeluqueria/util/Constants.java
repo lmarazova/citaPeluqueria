@@ -3,10 +3,20 @@ package com.example.citaPeluqueria.util;
 import com.example.citaPeluqueria.domain.enums.SlotStatus;
 
 import java.net.URI;
-
+/**
+ * Clase que contiene constantes globales usadas en toda la aplicación.
+ *
+ * Incluye mensajes de validación, etiquetas de servicios de peluquería,
+ * configuración de horas y datos administrativos.
+ *
+ * Estos valores permiten centralizar textos y configuraciones para evitar
+ * hardcodear strings por todo el código.
+ */
 public class Constants {
     public static final String THE_EMAIL_IS_REQUIRED ="El correo es obligatorio para tu identificación";
     public static final String PASSWORD_IS_REQUIRED = "No te puedes registrar sin elegir contraseña";
+
+    // Etiquetas legibles para los servicios de peluquería
     public static final String CUT= "Corte";
     public static final String COLOR = "Tinte";
     public static final String HIGHLIGHTS = "Mechas";
@@ -16,6 +26,8 @@ public class Constants {
     public static final String CURL = "Rizar";
     public static final String MASK = "Mascarilla";
     public static final String HYDRATION = "Hidratación";
+
+    // Combinaciones de servicios (ejemplo de etiqueta compuesta)
     public static final String CUT_WASH_BLOWDRY = "Corte + Lavado + Secado";
     public static final String COLOR_WASH_BLOWDRY = "Tinte + Lavado + Secado";
     public static final String HIGHLIGHTS_CUT_WASH = "Mechas + Corte + Lavado";
@@ -30,6 +42,8 @@ public class Constants {
     public static final String CURL_HIGHLIGHTS = "Rizar + Mechas";
     public static final String STRAIGHTEN_HIGHLIGHTS = "Planchar + Mechas";
     public static final String HYDRATION_BLOWDRY = "Hidratación + Secado";
+
+    // Configuraciones para agenda y usuarios admin
     public static final int SLOT_INTERVAL = 15;
 
     public static final int START_HOUR = 10;
