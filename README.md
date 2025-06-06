@@ -7,7 +7,7 @@ Aplicación web para la gestión de citas en una peluquería, diseñada para tre
 ##  Tecnologías utilizadas
 
 ### Backend:
-- Java 17
+- Java 21
 - Spring Boot
 - Spring MVC
 - Spring Security
@@ -38,20 +38,35 @@ Aplicación web para la gestión de citas en una peluquería, diseñada para tre
    - **Administrador** (cuenta inicial por defecto: `admin@domain.com` / `admin123`)
 
 ###  Funciones del administrador
+
+![Selección de horario por cliente](./screenshots/screenshot_4_admin_buttons.png)
+
 - Crear servicios simples y combinarlos en packs personalizados.
 - Definir duración del servicio en segmentos de 15 minutos.
+  ![Selección de horario por cliente](./screenshots/screenshot_10_admin_service_creation.png)
+
 - Clasificar los segmentos como:
    - **Activos** (requieren intervención del peluquero)
    - **Pasivos** (el cliente está esperando algún efecto)
 - Asignar imágenes, precios y disponibilidad.
 - Registrar peluqueros y clientes (por ejemplo, por llamada telefónica).
+  ![Registrar peluquiero](./screenshots/screenshot_6_admin_hairdresser_register.png)
+  ![Registrar clente](./screenshots/screenshot_7_admin_client_register.png)
+
 - Asignar citas a clientes, con selección de fecha y franja horaria disponible.
 - Consultar horarios disponibles por día.
 - Añadir observaciones a los clientes.
 - Cancelar citas.
+  ![Añadir observaciones y cancelar citas](./screenshots/screenshot_12_add_dates_and_delete.png)
+- 
 - Ver todos los servicios disponibles, editarlos o desactivarlos.
 - Modificar precios sin afectar citas existentes.
+  ![Ver servicios disponbles, editar y desactivarlos](./screenshots/screenshot_9_admin_service_activation.png)
+
+
 - Establecer días festivos para bloquear disponibilidad.
+  ![Añadir dias festivos](./screenshots/screenshot_11_admin_holiday_creation.png)
+
 
 ###  Funciones del peluquero
 - Acceder con su cuenta asignada.
@@ -61,16 +76,23 @@ Aplicación web para la gestión de citas en una peluquería, diseñada para tre
 
 ###  Funciones del cliente
 - Registrarse y gestionar su perfil.
+
 - Consultar todos los servicios y sus precios.
+  ![Selección de servicio por cliente](./screenshots/screenshot_1_home_date.png)
+
 - Seleccionar una fecha y ver franjas horarias disponibles.
+  ![Selección de horario por cliente](./screenshots/screenshot_2_choose_service.png)
+
 - Reservar una cita y visualizarla en su panel.
+ ![Reservar cita y visualizarla en panel](./screenshots/screenshot_3_show_appointment.png)
+
 - Cancelar citas si es necesario.
 
 
 ##  Puesta en marcha local (modo desarrollador)
 
 1. **Requisitos previos:**
-    - Java 17 instalado
+    - Java 21 instalado
     - MySQL (con base de datos configurada)
     - IntelliJ IDEA o tu IDE favorito
     - Maven instalado (opcional si usas IntelliJ)

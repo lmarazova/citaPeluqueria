@@ -20,57 +20,58 @@
 </div>
 <div class="container container-over-image mt-5 mb-5">
     <div class="row">
+        <div class="col-md-3"></div>
         <div class="col-md-6 image-col order-1 order-md-2">
             <img src="../img/register_moderator.png" alt="Imagen decorativa">
         </div>
         <div class="col-md-6 d-flex justify-content-center align-items-center order-2 order-md-1">
             <div class="form-container form-over-image">
-            <form th:method="post"
-                  th:action="@{/register-moderator}"
-                  th:object="${hairdresserRegisterDTO}">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Usuario</label>
-                    <input type="text"
-                           class="form-control"
-                           id="username"
-                           name="username"
-                           th:field="*{username}"
-                           required />
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Correo electrónico</label>
-                    <input type="email"
-                           class="form-control"
-                           id="email"
-                           name="email"
-                           th:field="*{email}"
-                           required />
-                    <small class="text-danger" th:if="${#fields.hasErrors('email')}"
-                           th:text="${#fields.errors('email')[0]}">Email error message</small>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Contraseña</label>
-                    <input type="password"
-                           class="form-control"
-                           id="password"
-                           name="password"
-                           th:field="*{password}"
-                           required />
-                </div>
-                <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                    <input type="password"
-                           class="form-control"
-                           id="confirmPassword"
-                           name="confirmPassword"
-                           th:field="*{confirmPassword}"
-                           required />
-                </div>
-                <small>
-                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-                </small>
-                <button type="submit" class="btn btn-outline-light w-50">Registra el peluquero</button>
-            </form>
+                <form th:method="post"
+                      th:action="@{/register-moderator}"
+                      th:object="${hairdresserRegisterDTO}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Usuario</label>
+                        <input type="text"
+                               class="form-control"
+                               id="username"
+                               name="username"
+                               th:field="*{username}"
+                               required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <input type="email"
+                               class="form-control"
+                               id="email"
+                               name="email"
+                               th:field="*{email}"
+                               required />
+                        <small class="text-danger" th:if="${#fields.hasErrors('email')}"
+                               th:text="${#fields.errors('email')[0]}">Email error message</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password"
+                               class="form-control"
+                               id="password"
+                               name="password"
+                               th:field="*{password}"
+                               required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                        <input type="password"
+                               class="form-control"
+                               id="confirmPassword"
+                               name="confirmPassword"
+                               th:field="*{confirmPassword}"
+                               required />
+                    </div>
+                    <small>
+                        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                    </small>
+                    <button type="submit" class="btn btn-outline-light w-50">Registra el peluquero</button>
+                </form>
             </div>
         </div>
     </div>

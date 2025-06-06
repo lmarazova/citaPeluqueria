@@ -150,58 +150,156 @@ input[type="date"] {
   color: white;
 }
 
-/* =========================================
-   CONTAINER SOBRE IMAGEN DE FONDO
-========================================= */
-.container-over-image {
-  position: relative;
-  min-height: 80vh;
-  overflow: hidden;
-}
-
-.image-col img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0.75rem;
-}
-
-.form-container {
-  width: 500px;
-  background-color: rgb(0 0 0 / 37%);
-  padding: 2rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
-.client-list {
-  padding-top: 6rem;
-}
+/* ====================================================
+   A) ESCRITORIO (ancho ≥ 768px): Formulario sobre imagen
+==================================================== */
 @media (min-width: 768px) {
+  /* 1) Ocultar la columna que muestra <img> */
+  .image-col {
+    display: none !important;
+  }
+
+  /* 2) El formulario usa la imagen como fondo */
+  body.login-page .form-over-image {
+    background: url('../img/login.png') no-repeat center/cover;
+  }
+  body.register-page .form-over-image {
+    background: url('../img/register.png') no-repeat center/cover;
+  }
+
   .form-over-image {
+    position: relative;      /* para el ::before */
+    width: 500px;            /* ancho en desktop */
+    max-width: 100%;
+    margin: 4rem auto;       /* centrado horizontal con margen superior */
+    padding: 2rem;
+    border-radius: 0.75rem;
+    filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.5));
+    overflow: hidden;        /* para el ::before */
+    color: #fff;             /* texto en blanco */
+  }
+
+  /* 3) Capa semitransparente dentro del formulario */
+  .form-over-image::before {
+    content: '';
     position: absolute;
-    top: 50%;
-    left: 40%;
-    transform: translate(-50%, -50%);
+    inset: 0;
+    background-color: rgba(64, 31, 22, 0.7);
+    z-index: 1;
+  }
+
+  /* 4) El <form> interno por delante de la capa */
+  .form-over-image > form {
+    position: relative;
     z-index: 2;
   }
+
+  /* 5) Forzar etiquetas, inputs, botones y enlaces en blanco */
+  .form-over-image .form-label {
+    color: #fff !important;
+  }
+  .form-over-image .form-control {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: #fff !important;
+    color: #fff !important;
+  }
+  .form-over-image .form-control::placeholder {
+    color: #eee !important;
+    opacity: 1 !important;
+  }
+  .form-over-image .btn {
+    border-color: #fff !important;
+    color: #fff !important;
+  }
+  .form-over-image a {
+    color: #fff !important;
+    position: relative;
+    z-index: 3;
+  }
 }
 
+/* ====================================================
+   B) MÓVIL (ancho < 768px): Contenedor completo con fondo
+==================================================== */
 @media (max-width: 767px) {
+  /* Oculta la columna de imagen si está presente */
+  .image-col {
+    display: none !important;
+  }
+
+  /* Estilo de fondo según página */
+  body.login-page .container-over-image,
+  body.register-page .container-over-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  body.login-page .container-over-image {
+    background-image: url('../img/login.png');
+  }
+
+  body.register-page .container-over-image {
+    background-image: url('../img/register.png');
+  }
+
+  /* Capa oscura semitransparente */
+  .container-over-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(64, 31, 22, 0.7);
+    z-index: 1;
+  }
+
+  /* Formulario sobre la imagen */
   .form-over-image {
-    position: static;
-    transform: none;
-    width: 100%;
-    margin-top: 1rem;
+    position: relative;
+    z-index: 2;
+    width: 90vw;
+    max-width: 400px;
+   /* margin: 2rem auto;*/
+    margin: 0 auto;
+    padding: 2rem;
+
+    border-radius: 0.75rem;
+
+    color: #fff;
   }
 
-  .form-container {
-    width: 100%;
+  /* Formulario blanco y claro */
+  .form-over-image .form-label,
+  .form-over-image .form-control,
+  .form-over-image .btn,
+  .form-over-image a {
+    color: #fff !important;
   }
 
-  main h1 {
-    font-size: 2.5rem;
+  .form-over-image .form-control {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: #fff !important;
+  }
+
+  .form-over-image .form-control::placeholder {
+    color: #eee !important;
+    opacity: 1 !important;
+  }
+
+  .form-over-image .btn {
+    border-color: #fff !important;
+  }
+
+  .form-over-image a {
+    z-index: 3;
+    position: relative;
   }
 }
+
 
 /* =========================================
    COMPONENTES: TARJETAS, BADGES, ACCORDIONS
@@ -352,6 +450,11 @@ button.btn-success {
 
 .btn-hover-bold:hover {
   font-weight: bold;
+}
+.btn-outline-light:hover {
+    color: black !important;
+    background-color: white !important;
+    border-color: white !important;
 }
 
 /* =========================================
@@ -591,3 +694,4 @@ h1 {
 .modal-body {
     color: white !important;
 }
+
