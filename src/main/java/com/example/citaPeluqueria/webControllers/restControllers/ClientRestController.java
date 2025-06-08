@@ -1,10 +1,9 @@
-package com.example.citaPeluqueria.webControllers;
+package com.example.citaPeluqueria.webControllers.restControllers;
 
 import com.example.citaPeluqueria.domain.entities.ClientEntity;
 import com.example.citaPeluqueria.mapper.AppointmentMapper;
 import com.example.citaPeluqueria.mapper.ClientMapper;
-import com.example.citaPeluqueria.domain.dtos.UserRestDTO;
-import com.example.citaPeluqueria.domain.entities.UserEntity;
+import com.example.citaPeluqueria.domain.dtos.restDTOS.UserRestDTO;
 import com.example.citaPeluqueria.repositories.ClientRepository;
 import com.example.citaPeluqueria.services.AppointmentService;
 import org.modelmapper.ModelMapper;

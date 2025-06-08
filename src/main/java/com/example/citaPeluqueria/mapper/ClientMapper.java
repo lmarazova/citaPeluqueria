@@ -1,6 +1,6 @@
 package com.example.citaPeluqueria.mapper;
 
-import com.example.citaPeluqueria.domain.dtos.UserRestDTO;
+import com.example.citaPeluqueria.domain.dtos.restDTOS.UserRestDTO;
 import com.example.citaPeluqueria.domain.entities.ClientEntity;
 import com.example.citaPeluqueria.domain.entities.UserEntity;
 import org.modelmapper.ModelMapper;

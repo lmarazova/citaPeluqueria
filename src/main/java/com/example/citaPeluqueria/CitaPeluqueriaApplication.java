@@ -12,8 +12,6 @@ import java.util.List;
 @EnableScheduling
 @SpringBootApplication
 public class CitaPeluqueriaApplication {
-
-
 	public static void main(String[] args) {
 		SpringApplication.run(CitaPeluqueriaApplication.class, args);
 	}

@@ -1,9 +1,7 @@
 package com.example.citaPeluqueria.mapper;
 
 import com.example.citaPeluqueria.domain.dtos.ServiceDTO;
-import com.example.citaPeluqueria.domain.dtos.UserRestDTO;
 import com.example.citaPeluqueria.domain.entities.ServiceEntity;
-import com.example.citaPeluqueria.domain.entities.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
