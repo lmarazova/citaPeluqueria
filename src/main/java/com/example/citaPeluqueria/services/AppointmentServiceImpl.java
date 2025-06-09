@@ -133,7 +133,6 @@ public class AppointmentServiceImpl implements AppointmentService{
                 slotRepository.save(slot);
             }
         }
-
         return true;
     }
 

@@ -41,6 +41,14 @@ public class ClientServiceImpl implements ClientService{
      */
     @Override
     public void registerUser(UserRegisterDTO userRegisterDTO) {
+
+        if(clientRepository.existsByEmail(userRegisterDTO.getEmail())){
+            throw new IllegalArgumentException("Email already in use");
+        }
+
+        if(clientRepository.findByPhone(userRegisterDTO.getPhone()) != null){
+            throw new IllegalArgumentException("Phone already in use");
+        }
         ClientEntity user = modelMapper.map(userRegisterDTO, ClientEntity.class);
         user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         user.setRoles(Set.of(Role.USER));

@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 @Service
 public class SlotServiceImpl implements SlotService, CommandLineRunner {
 
+
     private static final Logger logger = LoggerFactory.getLogger(SlotServiceImpl.class);
 
     private final HairdresserRepository hairdresserRepository;

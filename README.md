@@ -30,12 +30,24 @@ Aplicación web para la gestión de citas en una peluquería, diseñada para tre
 **CitaPeluqueriaApp** es una aplicación web pensada para facilitar la gestión de citas en una peluquería. Está diseñada para tres tipos de usuarios: clientes, peluqueros y administradores.
 
 ###  Gestión de usuarios
-- Registro de nuevos usuarios (clientes), con confirmación vía correo electrónico.
-- Inicio de sesión y recuperación de contraseña.
-- Acceso diferenciado para:
-   - **Clientes**
-   - **Peluqueros** (registrados por el administrador)
-   - **Administrador** (cuenta inicial por defecto: `admin@domain.com` / `admin123`)
+La aplicación contempla diferentes tipos de usuarios con distintos niveles de acceso:
+
+- **Clientes registrados:** usuarios que crean una cuenta mediante registro con correo electrónico y contraseña. Estos usuarios pueden iniciar sesión, gestionar sus citas y su perfil personal. La creación de estos usuarios incluye validaciones de seguridad y confirmación vía correo electrónico.
+
+- **Clientes invitados (“guest”):** usuarios que no disponen de cuenta ni acceso al sistema, y que son añadidos manualmente por los peluqueros (por ejemplo, tras una llamada telefónica o visita en persona). Estos clientes sólo disponen de los datos mínimos necesarios para la gestión de citas, sin contraseña ni acceso a funcionalidades online. Se diferencian mediante el campo booleano `guest` en la entidad `ClientEntity`.
+
+- **Peluqueros:** usuarios registrados por el administrador, con permisos específicos para gestionar citas y clientes.
+
+- **Administrador:** usuario con acceso completo al sistema.
+- ### Razones para el manejo de clientes “guest”
+
+En un entorno real de peluquería, es habitual que muchos clientes no utilicen plataformas digitales para gestionar sus citas. Para adaptarse a esta realidad, la aplicación permite manejar clientes “guest” sin necesidad de que se registren o gestionen una contraseña, facilitando su incorporación rápida y sencilla.
+
+Este enfoque garantiza:
+
+- Flexibilidad en la gestión de clientes.
+- Sencillez para usuarios no tecnológicos.
+- Seguridad, evitando crear accesos innecesarios para clientes sin cuenta.
 
 ###  Funciones del administrador
 
