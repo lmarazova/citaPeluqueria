@@ -8,6 +8,7 @@ import com.example.citaPeluqueria.mapper.AppointmentMapper;
 import com.example.citaPeluqueria.mapper.HairdresserMapper;
 import com.example.citaPeluqueria.mapper.SlotMapper;
 import com.example.citaPeluqueria.repositories.HairdresserRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  * Permite consultar todos los peluqueros o uno específico por su ID.
  */
 @RestController
+@Getter
 @RequestMapping("/api/hairdressers")
 public class HairdresserRestController {
 

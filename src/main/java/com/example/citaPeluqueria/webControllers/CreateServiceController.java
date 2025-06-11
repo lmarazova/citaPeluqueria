@@ -218,16 +218,16 @@ public class CreateServiceController {
     }
 
     /**
-     * Método final que procesa todos los datos del formulario:
-     * servicios seleccionados, bloques, precio e imagen subida.
-     * Crea y guarda el paquete de servicios en la base de datos.
+     * Procesa el formulario de creación de un paquete de servicios.
+     * Recoge los servicios seleccionados, los bloques de duración, el precio y la imagen subida.
+     * Crea y guarda el nuevo paquete en la base de datos.
      *
-     * @param serviceJson JSON con servicios seleccionados.
-     * @param blocksJson JSON con bloques seleccionados.
+     * @param serviceJson JSON con los servicios individuales seleccionados.
+     * @param blocksJson JSON con los bloques horarios seleccionados.
      * @param price Precio final del paquete.
-     * @param photo Imagen subida.
-     * @param model Modelo para la vista.
-     * @return Nombre de la vista: create-service.
+     * @param photo Imagen representativa del paquete.
+     * @param model Modelo de atributos para la vista.
+     * @return Nombre de la vista: "create-service".
      */
     @PostMapping("/submit-all")
     public String submitAll(
@@ -237,50 +237,12 @@ public class CreateServiceController {
             @RequestParam("photo") MultipartFile photo,
             Model model
     ) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
 
-        // Parseo
-        List<Map<String, String>> selectedServices = mapper.readValue(serviceJson, new TypeReference<>() {});
-        List<Map<String, String>> blocksList = mapper.readValue(blocksJson, new TypeReference<>() {});
-        String servicePackName = serviceService.buildLabelFromSelectedServices(selectedServices);
+        serviceService.processServicePack(serviceJson, blocksJson, price, photo);
 
-        List<SlotStatus> slotStatusList = slotService.convertBlockTypesToSlotStatuses(blocksList);
-        int totalTime = slotStatusList.size() * 15;
-
-        // Guardar imagen exactamente igual
-        String uploadDir = "C:\\Users\\lyuba\\OneDrive\\Escritorio\\SPRING ADVANCED\\FINAL PROJECT\\citaPeluquería\\src\\main\\resources\\static\\img\\";
-        File uploadFolder = new File(uploadDir);
-        if (!uploadFolder.exists()) uploadFolder.mkdirs();
-
-        String newFileName = servicePackName + ".png";
-        File destFile = new File(uploadFolder, newFileName);
-        photo.transferTo(destFile);
-
-        System.out.println("Archivo guardado como: " + destFile.getAbsolutePath());
-        // Logs
-        System.out.println("Nombre paquete servicio: " + servicePackName);
-        System.out.println("Precio: " + price);
-        System.out.println("Tiempo total: " + totalTime);
-
-        // Para mantener la vista
         List<HairServiceEntity> services = hairServiceRepository.findAll();
         model.addAttribute("basicServices", services);
         model.addAttribute("serviceJson", serviceJson);
-
-        ServiceFullDTO serviceFullDTO = new ServiceFullDTO();
-        serviceFullDTO.setDescription(servicePackName);
-        serviceFullDTO.setPrice(price);
-        serviceFullDTO.setTotalDuration(totalTime);
-
-        List<String>packageName = selectedServices.stream().map(service -> service.get("label")).filter(Objects::nonNull).collect(Collectors.toList());
-
-        ServiceEntity servicePack = modelMapper.map(serviceFullDTO, ServiceEntity.class);
-        List<HairService> hairServices = packageName.stream()
-                .map(hairServiceService::fromLabel)
-                .collect(Collectors.toList());
-
-        servicePack.setServices(hairServices);
-        serviceRepository.save(servicePack);
 
         return "create-service";
     }

@@ -1,6 +1,7 @@
 package com.example.citaPeluqueria.service;
 
 import com.example.citaPeluqueria.domain.enums.HairService;
+import com.example.citaPeluqueria.services.HairServiceService;
 import com.example.citaPeluqueria.services.HairServiceServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +30,13 @@ public class HairServiceTest {
 
     @Test
     void fromLabel_shouldReturnEnum_whenLabelMatchesBasicService() {
-        HairService result = hairServiceService.fromLabel("Corte");
+        HairServiceService hairServiceService = new HairServiceServiceImpl();
+
+        // Usa el label definido en el enum CUT para evitar errores por diferencias de texto
+        String inputLabel = HairService.CUT.getLabel();
+
+        HairService result = hairServiceService.fromLabel(inputLabel);
+
         assertEquals(HairService.CUT, result);
     }
 }

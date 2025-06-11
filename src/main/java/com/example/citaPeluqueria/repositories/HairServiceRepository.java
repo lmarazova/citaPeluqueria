@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface HairServiceRepository extends JpaRepository<HairServiceEntity, Long> {
     List<HairServiceEntity> findByHairServiceNot(HairService hairService);
+
+    HairServiceEntity findByHairService(HairService hairService);
 }

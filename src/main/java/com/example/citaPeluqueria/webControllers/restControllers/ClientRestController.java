@@ -100,7 +100,7 @@ public class ClientRestController {
                                     RedirectAttributes redirectAttributes) {
         appointmentService.deleteByClientDateAndHourRange(userId, date, selectedHourRange);
         redirectAttributes.addFlashAttribute("success", "Cita eliminada correctamente.");
-        return "redirect:/moderator"; // O redirige a donde tú necesites
+        return "redirect:/moderator";
     }
 
     /**

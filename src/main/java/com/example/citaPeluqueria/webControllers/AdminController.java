@@ -81,6 +81,7 @@ public class AdminController {
      * @return Mensaje de éxito o aviso si ya existe.
      */
     @GetMapping("/createAdmin")
+    @ResponseBody
     public String createAdmin() {
         // Comprobar si el usuario administrador ya existe
         if (clientRepository.findByUsername(Constants.ADMIN_NAME) == null) {
@@ -120,7 +121,7 @@ public class AdminController {
      * @param newHoliday Entidad del nuevo festivo.
      * @return Redirección al panel de administración.
      */
-    @PostMapping("/admin/holidays/add")
+    @PostMapping("/holidays/add")
     public String addHoliday(@ModelAttribute HolidayEntity newHoliday) {
         holidayRepository.save(newHoliday);
         return "redirect:/admin";
