@@ -25,6 +25,11 @@ public class SlotConverter {
         System.out.println("Convirtiendo slot con ID: " + entity.getId());
         System.out.println("Peluquero asignado: " + entity.getHairdresser());
 
+        if (entity.getHairdresser() != null) {
+            slotOutputDTO.setHairdresser(entity.getHairdresser().getUsername());
+        } else {
+            slotOutputDTO.setHairdresser(null);
+        }
         slotOutputDTO.setHairdresser(entity.getHairdresser().getUsername());
         slotOutputDTO.setSlotStatus(String.valueOf(entity.getSlotStatus()));
         return slotOutputDTO;

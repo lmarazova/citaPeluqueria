@@ -3,7 +3,9 @@ package com.example.citaPeluqueria.services;
 import com.example.citaPeluqueria.domain.dtos.CustomServicePackageDTO;
 import com.example.citaPeluqueria.domain.entities.ServiceEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 /**
@@ -36,4 +38,10 @@ public interface ServiceService {
      * @param isActive Si el servicio está activo o no.
      */
     void updateService(Long id, double price, boolean isActive);
+
+    void processServicePack(String serviceJson, String blocksJson, double price, MultipartFile photo) throws IOException;
+
+    void savePhoto(MultipartFile photo, String servicePackName) throws IOException;
+
+    void saveServicePack(List<Map<String, String>> selectedServices, String servicePackName, double price, int totalTime);
 }

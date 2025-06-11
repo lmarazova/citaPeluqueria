@@ -26,10 +26,11 @@ public class AppointmentMapper {
      * @param appointment La entidad de cita a convertir.
      * @return Un objeto {@link AppointmentDTO} con los datos correspondientes.
      */
-    public AppointmentDTO toDTO(AppointmentEntity appointment){
-        AppointmentDTO appointmentDTO = new AppointmentDTO();
-        appointmentDTO = modelMapper.map(appointment, AppointmentDTO.class);
-        appointmentDTO.setService(serviceMapper.toDTO(appointment.getService()));
+    public AppointmentDTO toDTO(AppointmentEntity appointment) {
+        AppointmentDTO appointmentDTO = modelMapper.map(appointment, AppointmentDTO.class);
+        if (appointment.getService() != null) {
+            appointmentDTO.setService(serviceMapper.toDTO(appointment.getService()));
+        }
         return appointmentDTO;
     }
 

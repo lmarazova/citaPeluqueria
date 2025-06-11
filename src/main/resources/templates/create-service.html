@@ -74,7 +74,7 @@
                                        (service.hairService == T(com.example.citaPeluqueria.domain.enums.HairService).CUSTOM &&
                                         service.customLabel != null &&
                                         !#strings.isEmpty(service.customLabel.trim()))}">
-                                        <span th:text="${service.hairService.name() == 'CUSTOM' ? service.customLabel : service.hairService.label}"></span>
+                                        <span th:text="${service.hairService.name == 'CUSTOM' ? service.customLabel : service.hairService.label}"></span>
 
                                         <div class="d-flex gap-2 ms-auto">
                                             <button type="button"
