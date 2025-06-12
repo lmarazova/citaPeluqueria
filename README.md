@@ -191,10 +191,81 @@ ActivationController, AppointmentController, AdminController, etc.
 - `static/`: CSS, JS, imágenes
 
 ---
+##  Tests Unitarios
+
+Los tests unitarios están ubicados en:  
+`src/test/java/com/example/citaPeluqueria/`
+
+###  ¿Qué cubren?
+
+- **Mappers**: verifican que las conversiones entre entidades y DTOs funcionen correctamente.
+- **Servicios**: prueban la lógica de negocio de clases como `HairServiceServiceImpl`, `SlotService`, etc.
+- **Clases auxiliares** (`util/`): cubren métodos como formateadores de hora (`HourFormatter`, `SlotProcessor`).
+- **Controladores individuales**: pruebas unitarias aisladas usando mocks de dependencias con Mockito.
+
+Estos tests aseguran que cada componente funcione correctamente **de forma aislada**, antes de ser integrado en el sistema completo.
+
+
+---
+##  Tests de Integración
+Este proyecto incluye una serie de **tests de integración** ubicados en:
+src/test/java/com/example/citaPeluqueria/integration
+###  ¿Qué cubren estos tests?
+
+Los tests verifican que los distintos componentes del sistema funcionen correctamente **en conjunto**, accediendo a la base de datos real configurada en el entorno de desarrollo o test.
+
+---
+
+### 1. `SlotRestController`
+- `GET /api/slots/{id}`: devuelve un turno completo (incluye peluquero, cliente, servicio).
+- `GET /api/slots`: devuelve la lista de todos los turnos.
+
+---
+
+### 2.  `AppointmentRestController`
+- `GET /api/appointments/{id}`: devuelve una cita con datos completos.
+- `GET /api/appointments`: devuelve la lista total de citas.
+
+---
+
+### 3.  `ClientRestController` / `UserRestController`
+- `GET /api/users/{id}`: devuelve un cliente junto con sus citas.
+- `GET /api/users`: lista completa de clientes registrados.
+
+---
+
+### 4.  `ServiceRestController`
+- `GET /api/services/{id}`: devuelve un servicio individual.
+- `GET /api/services`: devuelve la lista completa de servicios.
+
+---
+
+### 5.  Repositorios (`@DataJpaTest`)
+Se testean los métodos principales de persistencia:
+- `SlotRepository`: guardar, buscar por ID, obtener lista.
+- `AppointmentRepository`: guardar y consultar citas.
+- `ClientRepository` y `ServiceRepository`: operaciones básicas de persistencia.
+
+---
+
+### 6. Tests end-to-end
+Cobertura de flujos funcionales completos:
+- Crear un cliente → crear una cita asociada → consultar la cita.
+- Crear un slot → asignar peluquero y cliente → consultar el slot con todos los datos.
+
+---
+
+###  Cómo ejecutar los tests
+
+Puedes ejecutarlos desde **IntelliJ IDEA** con el botón ▶️ que aparece en cada clase o método.
+
+También puedes usar Maven desde la terminal:
+
+```bash
+mvn test
+---
+```
 
 ## Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más información.
-
----
-
