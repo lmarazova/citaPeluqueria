@@ -2,7 +2,7 @@
 
 Aplicación web para la gestión de citas en una peluquería, diseñada para tres tipos de usuarios: **clientes**, **peluqueros** y **administradores**. La plataforma permite reservar, gestionar y cancelar citas de forma intuitiva y segura.
 
-## 🎥 Vídeo explicativo
+## Vídeo explicativo
 
 Puedes ver una demostración completa de la aplicación en YouTube:
 
