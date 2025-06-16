@@ -83,6 +83,5 @@ public class RegisterController {
 
         // Registrar al usuario
         clientService.registerUser(userRegisterDTO);
-        return "redirect:/login";
-    }
+        return "redirect:/register?success=success";    }
 }

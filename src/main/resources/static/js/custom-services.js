@@ -1,6 +1,28 @@
 // custom-services.js
 // Gestiona los servicios personalizados y su creación
+function deleteCustomService(button) {
+    const serviceId = button.getAttribute("data-id");
 
+    if (!confirm("¿Seguro que deseas eliminar este servicio personalizado?")) {
+      return;
+    }
+
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+    fetch('/delete-custom-service/' + serviceId, {
+      method: 'DELETE',
+      headers: {
+        [csrfHeader]: csrfToken
+      }
+    }).then(response => {
+      if (response.ok) {
+        button.closest('li').remove();
+      } else {
+        alert("Error al eliminar el servicio. Código: " + response.status);
+      }
+    });
+  }
 document.addEventListener('DOMContentLoaded', () => {
   const yesBtn = document.getElementById('yesBtn');
   const noBtn = document.getElementById('noBtn');
@@ -52,28 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     newServiceInput.value = '';
   };
 
-  function deleteCustomService(button) {
-    const serviceId = button.getAttribute("data-id");
 
-    if (!confirm("¿Seguro que deseas eliminar este servicio personalizado?")) {
-      return;
-    }
-
-    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-    fetch('/delete-custom-service/' + serviceId, {
-      method: 'DELETE',
-      headers: {
-        [csrfHeader]: csrfToken
-      }
-    }).then(response => {
-      if (response.ok) {
-        button.closest('li').remove();
-      } else {
-        alert("Error al eliminar el servicio. Código: " + response.status);
-      }
-    });
-  }
 
 });
