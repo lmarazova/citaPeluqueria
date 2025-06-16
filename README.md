@@ -2,6 +2,11 @@
 
 Aplicación web para la gestión de citas en una peluquería, diseñada para tres tipos de usuarios: **clientes**, **peluqueros** y **administradores**. La plataforma permite reservar, gestionar y cancelar citas de forma intuitiva y segura.
 
+## 🎥 Vídeo explicativo
+
+Puedes ver una demostración completa de la aplicación en YouTube:
+
+🔗 [Ver vídeo en YouTube](https://youtu.be/MOAafbfFkw4)
 ---
 
 ##  Tecnologías utilizadas
@@ -48,7 +53,11 @@ Este enfoque garantiza:
 - Flexibilidad en la gestión de clientes.
 - Sencillez para usuarios no tecnológicos.
 - Seguridad, evitando crear accesos innecesarios para clientes sin cuenta.
+### Esquema de la base de datos
 
+Este es el diagrama ER (Entidad-Relación) que representa las principales entidades y relaciones del sistema:
+
+![Esquema de la base de datos](./screenshots/screenshot_entity_relations.png)
 ###  Funciones del administrador
 
 ![Selección de horario por cliente](./screenshots/screenshot_4_admin_buttons.png)
@@ -62,8 +71,8 @@ Este enfoque garantiza:
    - **Pasivos** (el cliente está esperando algún efecto)
 - Asignar imágenes, precios y disponibilidad.
 - Registrar peluqueros y clientes (por ejemplo, por llamada telefónica).
-  ![Registrar peluquiero](./screenshots/screenshot_6_admin_hairdresser_register.png)
-  ![Registrar clente](./screenshots/screenshot_7_admin_client_register.png)
+  ![Registrar peluquero](./screenshots/screenshot_6_admin_hairdresser_register.png)
+  ![Registrar cliente](./screenshots/screenshot_7_admin_client_register.png)
 
 - Asignar citas a clientes, con selección de fecha y franja horaria disponible.
 - Consultar horarios disponibles por día.
@@ -73,7 +82,7 @@ Este enfoque garantiza:
 - 
 - Ver todos los servicios disponibles, editarlos o desactivarlos.
 - Modificar precios sin afectar citas existentes.
-  ![Ver servicios disponbles, editar y desactivarlos](./screenshots/screenshot_9_admin_service_activation.png)
+  ![Ver servicios disponibles, editar y desactivarlos](./screenshots/screenshot_9_admin_service_activation.png)
 
 
 - Establecer días festivos para bloquear disponibilidad.
