@@ -27,7 +27,6 @@
                 <!-- Indicadores -->
                 <div class="carousel-indicators">
                     <button th:each="packageItem, stat : ${packages}"
-                            th:if="${packageItem.active}"
                             type="button"
                             data-bs-target="#servicesCarousel"
                             th:data-bs-slide-to="${stat.index}"
@@ -37,7 +36,6 @@
                 <!-- Slides -->
                 <div class="carousel-inner">
                     <div th:each="packageItem, stat : ${packages}"
-                         th:if="${packageItem.active}"
                          th:class="'carousel-item' + (${stat.first} ? ' active' : '')"
                          style="background: transparent !important">
                         <div class="card mb-3 list-group-item" style="max-width: 100%;">

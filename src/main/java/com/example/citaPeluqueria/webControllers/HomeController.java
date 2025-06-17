@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Controlador principal de la aplicación de citas para peluquería.
  * Maneja las solicitudes relacionadas con la visualización y eliminación de citas.
@@ -59,7 +61,10 @@ public class HomeController {
     @GetMapping("/home")
     public String home(Model model, Principal principal) {
         UserEntity user = clientRepository.findByEmail(principal.getName());
-        List<ServiceEntity> packages = serviceRepository.findAll();
+        List<ServiceEntity> packages = serviceRepository.findAll()
+                .stream()
+                .filter(ServiceEntity::isActive)
+                .collect(Collectors.toList());
         List<AppointmentEntity> appointments = appointmentRepository.findByUser(user);
 
         model.addAttribute("user", user);
